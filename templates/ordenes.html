@@ -1,0 +1,68 @@
+{% extends "layout.html" %} {% block body %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h3 class="mb-0">Órdenes</h3>
+  <a class="btn btn-outline-secondary" href="/">Volver</a>
+</div>
+
+{% if orders %}
+<div class="row g-3">
+  {% for order in orders %}
+  <div class="col-12">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <div class="d-flex align-items-start">
+          <div>
+            <h5 class="card-title mb-1">Orden #{{ order.id }}</h5>
+            <div class="text-muted">Fecha: {{ order.fecha_pedido }}</div>
+            <div class="mb-2">
+              Estado:
+              <span class="badge bg-info text-dark">{{ order.estado }}</span>
+            </div>
+            <div class="mb-2">
+              Usuario: {{ order.usuario.nombre if order.usuario else
+              'Desconocido' }}
+            </div>
+
+            <div>
+              <strong>Items:</strong>
+              {% if order.items and order.items|length > 0 %}
+              <ul class="mb-2">
+                {% for item in order.items %}
+                <li>
+                  Producto: {{ item.producto.nombre if item.producto else ('ID:
+                  ' ~ item.id_producto) }} — Cantidad: {{ item.cantidad }} {% if
+                  item.precio_unitario is not none %} — Precio: ${{
+                  item.precio_unitario }}{% endif %}
+                </li>
+                {% endfor %}
+              </ul>
+              {% else %}
+              <div class="text-muted mb-2">No hay items en esta orden.</div>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="ms-auto d-flex align-items-start">
+            <a
+              href="{{ url_for('agregando_orden', order_id=order.id) }}"
+              class="btn btn-sm btn-outline-success me-2"
+              >Agregar productos</a
+            >
+            <form
+              action="{{ url_for('delete_order',id=order.id) }}"
+              method="post"
+            >
+              <button type="submit" class="btn btn-danger">
+                Eliminar Orden
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-secondary">No hay órdenes para mostrar.</div>
+{% endif %} {% endblock %}

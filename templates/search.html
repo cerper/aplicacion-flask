@@ -1,0 +1,67 @@
+{% extends "layout.html" %} {% block body %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h4 class="card-title">Buscar Productos</h4>
+        <form action="/search" method="post" class="row g-2">
+          <div class="col-9">
+            <input
+              type="text"
+              id="busqueda"
+              name="busqueda"
+              class="form-control"
+              placeholder="Nombre del producto"
+              required
+            />
+          </div>
+          <div class="col-3 d-grid">
+            <button type="submit" class="btn btn-primary">Buscar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    {% if results %}
+    <div class="row g-3">
+      {% for item in results %}
+      <div class="col-12">
+        <div
+          class="card p-3 shadow-sm d-flex flex-row gap-3 align-items-center"
+        >
+          {% if item.imagen_url %}
+          <img
+            src="{{ item.imagen_url }}"
+            alt="{{ item.nombre }}"
+            style="width: 120px; height: 90px; object-fit: contain"
+          />
+          {% else %}
+          <div
+            class="bg-light d-flex align-items-center justify-content-center"
+            style="width: 120px; height: 90px"
+          >
+            Sin imagen
+          </div>
+          {% endif %}
+
+          <div>
+            <h5 class="mb-1">{{ item.nombre }}</h5>
+            <div class="text-muted">
+              Cantidad: {{ item.cantidad }} • Precio: ${{ item.precio }}
+            </div>
+          </div>
+          <div class="ms-auto">
+            <form action="{{ url_for('add_pedido') }}" method="POST">
+              <input type="hidden" name="producto_id" value="{{ item.id }}" />
+              <button class="btn btn-sm btn-success">Comprar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}
