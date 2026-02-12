@@ -9,7 +9,7 @@ Configurar MySQL: Debe tener MySQL instalado y correrlo en el puerto 3306 y crea
 Puertomysql: 3306
 Usuario: root
 
-Contraseña: 1234
+Contraseña: 0
 
 Instalar dependencias: Abrir una terminal en la carpeta del proyecto y ejecutar:
 pip3 install -r requirements.txt
